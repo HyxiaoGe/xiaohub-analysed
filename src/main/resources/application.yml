@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: xiaohub-analysed
+  profiles:
+    active: prod
+server:
+  port: 8888
