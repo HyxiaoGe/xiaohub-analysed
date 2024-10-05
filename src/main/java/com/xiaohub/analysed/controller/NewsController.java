@@ -20,9 +20,9 @@ public class NewsController {
     }
 
     @GetMapping
-    public BaseResponse getAllArticles() {
-        List<News> articles = newsService.getAllArticles();
-        return BaseResponse.ok(articles);
+    public BaseResponse getArticles() {
+        List<News> news = newsService.getLatestArticles();
+        return BaseResponse.ok(news);
     }
 
     @GetMapping("/{id}")
