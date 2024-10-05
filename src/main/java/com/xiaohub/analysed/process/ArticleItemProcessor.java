@@ -2,7 +2,7 @@ package com.xiaohub.analysed.process;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xiaohub.analysed.dao.entity.RawArticle;
+import com.xiaohub.analysed.dao.entity.News;
 import com.xiaohub.analysed.dto.ArticleWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,13 +13,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Component
-public class ArticleItemProcessor implements ItemProcessor<ArticleWrapper, RawArticle> {
+public class ArticleItemProcessor implements ItemProcessor<ArticleWrapper, News> {
 
     private static final Logger logger = LoggerFactory.getLogger(ArticleItemProcessor.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public RawArticle process(ArticleWrapper wrapper) {
+    public News process(ArticleWrapper wrapper) {
         try {
             String json = wrapper.getJson();
             String platform = wrapper.getPlatform();
@@ -30,7 +30,7 @@ public class ArticleItemProcessor implements ItemProcessor<ArticleWrapper, RawAr
             String title = jsonNode.path("title").asText();
             String publicationDate = jsonNode.path("publication_date") == null?"":jsonNode.path("publication_date").asText();
 
-            RawArticle article = new RawArticle();
+            News article = new News();
             article.setContent(cleanText(content));
             article.setLink(link);
             article.setTitle(title);
@@ -49,7 +49,7 @@ public class ArticleItemProcessor implements ItemProcessor<ArticleWrapper, RawAr
         }
     }
 
-    private void processArticle(RawArticle article) {
+    private void processArticle(News article) {
         if (!article.getContent().equals("No content found between divs")) {
             String[] parts = article.getContent().split("总结:");
             if (parts.length > 1) {

@@ -7,7 +7,12 @@ spring:
     username: root
     password: hyxiao
     driver-class-name: com.mysql.cj.jdbc.Driver
-#  jpa:
+  batch:
+    jdbc:
+      initialize-schema: never
+    job:
+      enabled: false
+  #  jpa:
 #    hibernate:
 #      ddl-auto: update
 #    show-sql: true

@@ -1,6 +1,6 @@
 package com.xiaohub.analysed.config;
 
-import com.xiaohub.analysed.dao.entity.RawArticle;
+import com.xiaohub.analysed.dao.entity.News;
 import com.xiaohub.analysed.dto.ArticleWrapper;
 import com.xiaohub.analysed.process.ArticleItemProcessor;
 import com.xiaohub.analysed.reader.RedisItemReader;
@@ -10,15 +10,13 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
-import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableBatchProcessing
+@EnableBatchProcessing(modular=true)
 public class BatchConfig {
 
     @Autowired
@@ -34,7 +32,7 @@ public class BatchConfig {
     private ArticleItemProcessor articleItemProcessor;
 
     @Autowired
-    private ItemWriter<RawArticle> articleItemWriter;
+    private ItemWriter<News> articleItemWriter;
 
     @Bean
     public Job processArticlesJob(Step processArticlesStep) {
@@ -48,7 +46,7 @@ public class BatchConfig {
     @Bean
     public Step processArticlesStep(StepBuilderFactory stepBuilderFactory) {
         return stepBuilderFactory.get("processArticlesStep")
-                .<ArticleWrapper, RawArticle>chunk(10)
+                .<ArticleWrapper, News>chunk(10)
                 .reader(redisItemReader)
                 .processor(articleItemProcessor)
                 .writer(articleItemWriter)

@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "t_raw_articles")
-public class RawArticle extends BaseEntity {
+@Table(name = "t_news")
+public class News extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")
     private String content;
@@ -21,7 +21,6 @@ public class RawArticle extends BaseEntity {
 
     @Column(nullable = false)
     private String platform;
-
 
     @Column(nullable = false)
     private String title;
