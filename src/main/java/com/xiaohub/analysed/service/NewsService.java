@@ -3,6 +3,8 @@ package com.xiaohub.analysed.service;
 import com.xiaohub.analysed.dao.entity.News;
 import com.xiaohub.analysed.dao.repo.NewsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,24 +19,17 @@ public class NewsService {
         this.newsRepository = newsRepository;
     }
 
-    public List<News> getAllArticles() {
-        return newsRepository.findAll();
-    }
-
     public News getArticleById(Long id) {
         return newsRepository.findById(id).orElse(null);
     }
 
-    public News saveArticle(News article) {
-        return newsRepository.save(article);
-    }
-
-    public void deleteArticle(Long id) {
-        newsRepository.deleteById(id);
-    }
-
     public List<News> getLatestArticles() {
-        return newsRepository.findTop10ByOrderByPublicationDateDesc();
+        return newsRepository.findLatestByPlatform();
+    }
+
+    public List<News> findAISummarizedNews() {
+        Pageable pageable = PageRequest.of(0, 10);
+        return newsRepository.findAISummarizedNews(pageable);
     }
 
     public List<News> getUnprocessedArticles() {

@@ -20,45 +20,22 @@ public class NewsController {
     }
 
     @GetMapping
-    public BaseResponse getArticles() {
+    public BaseResponse getNews() {
         List<News> news = newsService.getLatestArticles();
         return BaseResponse.ok(news);
     }
 
+    @GetMapping("/ai-summary")
+    public BaseResponse getNewsByAISummary() {
+        List<News> news = newsService.findAISummarizedNews();
+        return BaseResponse.ok(news);
+    }
+
     @GetMapping("/{id}")
-    public BaseResponse getArticleById(@PathVariable Long id) {
+    public BaseResponse getNewsById(@PathVariable Long id) {
         News article = newsService.getArticleById(id);
         if (article != null) {
             return BaseResponse.ok(article);
-        } else {
-            return BaseResponse.errorMsg("Article not found");
-        }
-    }
-
-    @PostMapping
-    public BaseResponse createArticle(@RequestBody News article) {
-        News savedArticle = newsService.saveArticle(article);
-        return BaseResponse.ok(savedArticle);
-    }
-
-    @PutMapping("/{id}")
-    public BaseResponse updateArticle(@PathVariable Long id, @RequestBody News article) {
-        News existingArticle = newsService.getArticleById(id);
-        if (existingArticle != null) {
-            article.setId(id);
-            News updatedArticle = newsService.saveArticle(article);
-            return BaseResponse.ok(updatedArticle);
-        } else {
-            return BaseResponse.errorMsg("Article not found");
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public BaseResponse deleteArticle(@PathVariable Long id) {
-        News existingArticle = newsService.getArticleById(id);
-        if (existingArticle != null) {
-            newsService.deleteArticle(id);
-            return BaseResponse.ok();
         } else {
             return BaseResponse.errorMsg("Article not found");
         }
