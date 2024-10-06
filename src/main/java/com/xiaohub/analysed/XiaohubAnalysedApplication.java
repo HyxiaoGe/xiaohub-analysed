@@ -14,17 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class XiaohubAnalysedApplication {
 
 	public static void main(String[] args) {
-		ConfigurableApplicationContext context = SpringApplication.run(XiaohubAnalysedApplication.class, args);
-
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			try {
-				Thread.sleep(5000); // 给应用 5 秒钟来尝试优雅关闭
-				System.out.println("Application is shutting down forcefully...");
-				System.exit(0);
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-			}
-		}));
+		SpringApplication.run(XiaohubAnalysedApplication.class);
 	}
 
 }
